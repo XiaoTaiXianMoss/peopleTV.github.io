@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于电视频道导航系统</title>
+    <title>电视频道导航系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #27ae60; /* 主色调改为绿色 */
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --card-bg-light: rgba(255, 255, 255, 0.85);
+            --card-bg-dark: rgba(44, 62, 80, 0.85);
+            --text-light: #333;
+            --text-dark: #f5f5f5;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --header-gradient: linear-gradient(135deg, #1e8449, #27ae60); /* 顶部绿色渐变 */
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,29 +27,15 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        :root {
-            --primary-color: #5a67d8;
-            --secondary-color: #4c51bf;
-            --accent-color: #e53e3e;
-            --light-color: #f7fafc;
-            --dark-color: #2d3748;
-            --success-color: #48bb78;
-            --card-bg-light: rgba(255, 255, 255, 0.92);
-            --card-bg-dark: rgba(30, 41, 59, 0.92);
-            --text-light: #2d3748;
-            --text-dark: #e2e8f0;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
         body {
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            background: linear-gradient(135deg, #d4f7e4, #ecf7f0); /* 柔和绿色背景 */
             color: var(--text-light);
             line-height: 1.6;
             transition: background-color 0.3s, color 0.3s;
         }
 
         body.dark-mode {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background: linear-gradient(135deg, #0a2e1d, #14452c); /* 深绿色背景 */
             color: var(--text-dark);
         }
 
@@ -45,652 +45,448 @@
             padding: 0 20px;
         }
 
-        /* 导航样式 - 添加滚动隐藏效果 */
-        header {
-            background: rgba(255, 255, 255, 0.95);
+        .header {
+            background: var(--header-gradient);
             backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
-            position: fixed;
+            padding: 20px 0;
+            position: sticky;
             top: 0;
-            width: 100%;
             z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        body.dark-mode header {
-            background: rgba(15, 23, 42, 0.95);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
+            box-shadow: var(--shadow);
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .logo-icon {
-            font-size: 28px;
-            color: var(--accent-color);
+        .logo h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .logo p {
+            font-size: 1.1rem;
+            color: #d1f7e3;
+            opacity: 0.9;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
+        body.dark-mode .logo p {
+            color: rgba(255, 255, 255, 0.8);
         }
 
-        .nav-link {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            position: relative;
         }
 
-        body.dark-mode .nav-link {
-            color: var(--light-color);
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            font-size: 1.1rem;
+            outline: none;
         }
 
-        .nav-link:hover {
-            color: var(--accent-color);
+        #searchInput:focus {
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.5); /* 绿色轮廓 */
         }
 
         .theme-toggle {
+            display: block;
+            margin: 20px auto;
             background: transparent;
-            border: 2px solid var(--primary-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border: 2px solid white;
+            border-radius: 50px;
+            padding: 10px 25px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .theme-toggle i {
-            font-size: 18px;
-            color: var(--primary-color);
-            transition: all 0.3s;
-        }
-
         .theme-toggle:hover {
-            background: var(--primary-color);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .theme-toggle:hover i {
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: rgba(39, 174, 96, 0.2);
             color: white;
-        }
-
-        body.dark-mode .theme-toggle i {
-            color: #e2e8f0;
-        }
-
-        /* 返回主页面按钮 */
-        .back-btn {
-            background: var(--primary-color);
-            color: white;
-            padding: 8px 16px;
+            border: none;
             border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: rgba(39, 174, 96, 0.4);
+        }
+
+        body.dark-mode .filter-btn {
+            background: rgba(39, 174, 96, 0.3);
+        }
+
+        body.dark-mode .filter-btn.active, 
+        body.dark-mode .filter-btn:hover {
+            background: rgba(39, 174, 96, 0.5);
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .channel-card {
+            background: var(--card-bg-light);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
             text-decoration: none;
+            color: var(--text-light);
+        }
+
+        body.dark-mode .channel-card {
+            background: var(--card-bg-dark);
+            color: var(--text-dark);
+        }
+
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--primary-color); /* 绿色边框 */
+        }
+
+        .channel-logo {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(39, 174, 96, 0.1); /* 淡绿色背景 */
+        }
+
+        body.dark-mode .channel-logo {
+            background: rgba(39, 174, 96, 0.15);
+        }
+
+        .channel-logo i {
+            font-size: 3rem;
+            color: var(--primary-color); /* 绿色图标 */
+        }
+
+        .channel-info {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.05);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        body.dark-mode .channel-info {
+            background: rgba(0, 0, 0, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .channel-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .channel-number {
             font-weight: 600;
+            color: var(--primary-color); /* 绿色数字 */
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        /* 新增的页脚样式 */
+        .site-footer {
+            background: linear-gradient(135deg, #1e8449, #27ae60);
+            color: #f5f5f5;
+            padding: 25px 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        body.dark-mode .site-footer {
+            background: linear-gradient(135deg, #0a2e1d, #14452c);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copyright i {
+            font-size: 18px;
+            color: #ffdf70;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            background: rgba(255, 255, 255, 0.15);
+            color: #f5f5f5;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .back-btn:hover {
-            background: var(--accent-color);
-            transform: translateX(-5px);
-        }
-
-        /* Hero区域样式 */
-        .hero {
-            padding: 160px 0 80px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            color: var(--light-color);
-        }
-
-        body.dark-mode .hero p {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* 卡片样式 */
-        .card {
-            background: var(--card-bg-light);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark-mode .card {
-            background: var(--card-bg-dark);
-            border-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-title {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-        }
-
-        body.dark-mode .card-title {
-            color: #a3bffa;
-        }
-
-        .card-icon {
-            font-size: 1.5rem;
-        }
-
-        /* 时间线样式 */
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 25px;
-            width: 4px;
-            background: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 70px;
-            margin-bottom: 40px;
-        }
-
-        .timeline-date {
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: var(--primary-color);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
-        }
-
-        .timeline-content {
-            background: rgba(90, 103, 216, 0.08);
-            padding: 20px;
-            border-radius: 10px;
-            position: relative;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .timeline-content h4 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        body.dark-mode .timeline-content {
-            background: rgba(90, 103, 216, 0.12);
-        }
-
-        /* 技术栈展示 */
-        .tech-stack {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .tech-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
-
-        .tech-item:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .tech-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-
-        .tech-name {
-            font-weight: 600;
-            text-align: center;
-        }
-
-        /* 作者卡片 */
-        .author-card {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .author-avatar {
-            flex: 0 0 120px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .avatar-icon {
-            font-size: 48px;
-            color: white;
-        }
-
-        .author-info {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            font-size: 18px;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .social-icon:hover {
+        .footer-link:hover {
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-3px);
-            background: var(--accent-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* 按钮样式 */
-        .btn {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 5px;
-            transition: all 0.3s;
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn:hover {
-            background: transparent;
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        body.dark-mode .btn:hover {
-            color: var(--light-color);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .hero {
-                padding-top: 130px;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .nav-container {
+        @media (max-width: 600px) {
+            .footer-container {
                 flex-direction: column;
-                gap: 15px;
-            }
-            
-            .author-card {
-                flex-direction: column;
+                gap: 20px;
                 text-align: center;
             }
-            
-            .author-avatar {
-                margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .channels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
             
-            .social-links {
-                justify-content: center;
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .search-container {
+                max-width: 90%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <header id="mainHeader">
+    <div class="header">
         <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <a href="index.html" class="back-btn">
-                        <i class="fas fa-arrow-left"></i> 返回首页
-                    </a>
-                    <div class="logo-text">全家电视频道导航系统</div>
-                </div>
-                <div class="nav-links">
-                    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> 首页</a>
-                    <a href="#" class="nav-link"><i class="fas fa-info-circle"></i> 关于</a>
-                    <a href="#" class="nav-link"><i class="fas fa-question-circle"></i> 帮助</a>
-                    <button class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="container">
-        <!-- Hero区域 -->
-        <section class="hero">
-            <h1>关于电视频道导航系统</h1>
-            <p>智能家庭电视娱乐解决方案 - AI精心设计，畅享流畅体验</p>
-            <div>
-                <a href="index.html" class="btn"><i class="fas fa-play-circle"></i> 立即体验</a>
-                <a href="#" class="btn btn-secondary"><i class="fab fa-github"></i> GitHub仓库</a>
-            </div>
-        </section>
-
-        <!-- 项目信息卡片 -->
-        <div class="card">
-            <h2 class="card-title"><i class="fas fa-star card-icon"></i> 项目简介</h2>
-            <p>全家电视频道导航系统是创新性的电视直播解决方案，旨在为用户提供直观、便捷的频道访问体验。通过精心设计的界面和强大功能，让您轻松获取29个精选电视频道和流媒体平台内容。</p>
-            
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 25px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3><i class="fas fa-tachometer-alt"></i> 核心价值</h3>
-                    <ul style="list-style-type: none; padding-left: 20px;">
-                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--success-color);"></i> 简化电视直播观看流程</li>
-                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--success-color);"></i> 为多年龄段用户优化体验</li>
-                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--success-color);"></i> 一站式解决频道导航问题</li>
-                        <li><i class="fas fa-check-circle" style="color: var(--success-color);"></i> 无缝集成主流电视频道</li>
-                    </ul>
-                </div>
-                
-                <div style="flex: 1; min-width: 300px;">
-                    <h3><i class="fas fa-list-ol"></i> 频道统计</h3>
-                    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">6</div>
-                            <div>央视频道</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">8</div>
-                            <div>卫视频道</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">6</div>
-                            <div>本地频道</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">9</div>
-                            <div>流媒体平台</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 功能亮点卡片 -->
-        <div class="card">
-            <h2 class="card-title"><i class="fas fa-bolt card-icon"></i> 功能亮点</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                <div style="padding: 15px; border-left: 3px solid var(--accent-color);">
-                    <h3><i class="fas fa-search" style="color: var(--accent-color);"></i> 智能频道搜索</h3>
-                    <p>支持精确和模糊搜索：单数字匹配频道(如"1"→CCTV1)，多字符匹配类似频道(如"10"→101,102等)</p>
-                </div>
-                <div style="padding: 15px; border-left: 3px solid #9b59b6;">
-                    <h3><i class="fas fa-adjust" style="color: #9b59b6;"></i> 深色/浅色主题</h3>
-                    <p>一键切换日间/夜间模式，自动记忆用户偏好，在不同光线环境下提供最佳视觉体验</p>
-                </div>
-                <div style="padding: 15px; border-left: 3px solid #2ecc71;">
-                    <h3><i class="fas fa-mobile-alt" style="color: #2ecc71;"></i> 响应式设计</h3>
-                    <p>完美适配各类设备：桌面电脑、平板电脑及手机，在任何屏幕上都有出色表现</p>
-                </div>
-                <div style="padding: 15px; border-left: 3px solid #f1c40f;">
-                    <h3><i class="fas fa-tv" style="color: #f1c40f;"></i> 即时观看体验</h3>
-                    <p>无需复杂操作，点击频道方块直接跳转播放页面，快速访问您喜爱的节目</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 开发历程卡片 -->
-        <div class="card">
-            <h2 class="card-title"><i class="fas fa-code-branch card-icon"></i> 开发历程</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">2025 03</div>
-                    <div class="timeline-content">
-                        <h4>项目立项</h4>
-                        <p>创建Ai问答及代码调教，仓库，分析用户需求，确定核心功能和技术实现方案</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023.07</div>
-                    <div class="timeline-content">
-                        <h4>UI/UX设计与首版开发</h4>
-                        <p>DeepSeek完成界面原型设计，构建初始版本频道布局和搜索功能</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023.08</div>
-                    <div class="timeline-content">
-                        <h4>深色模式与响应式适配</h4>
-                        <p>腾讯元宝编写，实现主题切换功能，完成全设备响应式布局适配</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023.09</div>
-                    <div class="timeline-content">
-                        <h4>测试与优化</h4>
-                        <p>腾讯元宝（DeepSeek）完善用户交互，增强视觉反馈效果，优化频道加载速度</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023.10</div>
-                    <div class="timeline-content">
-                        <h4>正式发布</h4>
-                        <p>部署至GitHub Pages，开放源代码，收集用户反馈</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 技术栈卡片 -->
-        <div class="card">
-            <h2 class="card-title"><i class="fas fa-layer-group card-icon"></i> 技术实现</h2>
-            <h3>核心技术栈</h3>
-            <div class="tech-stack">
-                <div class="tech-item">
-                    <div class="tech-icon"><i class="fab fa-html5"></i></div>
-                    <div class="tech-name">HTML5</div>
-                    <div>语义化结构</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon"><i class="fab fa-css3-alt"></i></div>
-                    <div class="tech-name">CSS3</div>
-                    <div>Flexbox/Grid布局</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon"><i class="fab fa-js"></i></div>
-                    <div class="tech-name">JavaScript</div>
-                    <div>交互逻辑</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon"><i class="fas fa-palette"></i></div>
-                    <div class="tech-name">CSS变量</div>
-                    <div>主题切换</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon"><i class="fab fa-github"></i></div>
-                    <div class="tech-name">GitHub</div>
-                    <div>版本控制</div>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon"><i class="fas fa-mobile"></i></div>
-                    <div class="tech-name">响应式设计</div>
-                    <div>媒体查询</div>
-                </div>
+            <div class="logo">
+                <h1>全家电视频道导航系统</h1>
+                <p>29个精选频道，一键直达您喜爱的电视节目</p>
             </div>
             
-            <div style="margin-top: 30px;">
-                <h3>设计与开发原则</h3>
-                <ul style="padding-left: 25px; margin-top: 15px;">
-                    <li style="margin-bottom: 10px;"><strong>简约性优先</strong>：极简设计让所有用户快速上手</li>
-                    <li style="margin-bottom: 10px;"><strong>渐进增强</strong>：核心功能在不支持JS环境中依然可用</li>
-                    <li style="margin-bottom: 10px;"><strong>性能优化</strong>：最小化外部依赖，提升加载速度</li>
-                    <li><strong>可访问性</strong>：符合WCAG标准，适应各类用户需求</li>
-                </ul>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="输入频道名称或编号...">
             </div>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i> 切换暗色模式
+            </button>
         </div>
+    </div>
 
-        <!-- 作者信息卡片 -->
-        <div class="card">
-            <h2 class="card-title"><i class="fas fa-user card-icon"></i> 仓库信息</h2>
-            <div class="author-card">
-                <div class="author-avatar">
-                    <i class="fas fa-user-tie avatar-icon"></i>
-                </div>
-                <div class="author-info">
-                    <h3>小苔藓玩游</h3>
-                    <p>专业Ai调教师，github受益者</p>
-                    <p>感恩AI的发展，让我这种普通人用腾讯元宝，DeepSeek等Ai生成了这个方便大家看电视的网站🙏</p>
-                    <div class="social-links">
-                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">全部频道</button>
+            <button class="filter-btn" data-filter="央视">央视</button>
+            <button class="filter-btn" data-filter="卫视">卫视</button>
+            <button class="filter-btn" data-filter="本地">本地</button>
+            <button class="filter-btn" data-filter="流媒体">流媒体</button>
+        </div>
+        
+        <div class="channels-grid" id="channelsGrid">
+            <!-- 频道卡片将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 新增的页脚区域 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="copyright">
+                <i class="fas fa-copyright"></i> 
+                2025 电视频道导航 - 个人及Ai制作
+            </div>
+            <div class="footer-links">
+                <a href="about.html" class="footer-link">
+                    <i class="fas fa-info-circle"></i> 关于我们
+                </a>
             </div>
         </div>
-    </main>
+    </footer>
 
     <script>
-        // 深色模式切换功能（修复版本）
+        // 频道数据
+        const channels = [
+            { name: "CCTV-1 综合", number: "101", category: "央视", icon: "fa-tv", url: "http://tv.cctv.com/live/cctv1/" },
+            { name: "CCTV-2 财经", number: "102", category: "央视", icon: "fa-chart-line", url: "http://tv.cctv.com/live/cctv2/" },
+            { name: "CCTV-3 综艺", number: "103", category: "央视", icon: "fa-music", url: "http://tv.cctv.com/live/cctv3/" },
+            { name: "CCTV-4 国际", number: "104", category: "央视", icon: "fa-globe-asia", url: "http://tv.cctv.com/live/cctv4/" },
+            { name: "CCTV-5 体育", number: "105", category: "央视", icon: "fa-football-ball", url: "http://tv.cctv.com/live/cctv5/" },
+            { name: "CCTV-6 电影", number: "106", category: "央视", icon: "fa-film", url: "http://tv.cctv.com/live/cctv6/" },
+            { name: "CCTV-13 新闻", number: "113", category: "央视", icon: "fa-newspaper", url: "http://tv.cctv.com/live/cctv13/" },
+            
+            { name: "北京卫视", number: "201", category: "卫视", icon: "fa-landmark", url: "http://www.btv.org/" },
+            { name: "湖南卫视", number: "202", category: "卫视", icon: "fa-utensils", url: "http://www.hunantv.com/" },
+            { name: "浙江卫视", number: "203", category: "卫视", icon: "fa-anchor", url: "http://www.zjstv.com/" },
+            { name: "东方卫视", number: "204", category: "卫视", icon: "fa-city", url: "http://www.dragontv.cn/" },
+            { name: "江苏卫视", number: "205", category: "卫视", icon: "fa-leaf", url: "http://www.jstv.com/" },
+            { name: "广东卫视", number: "206", category: "卫视", icon: "fa-tree", url: "http://www.gdtv.cn/" },
+            { name: "深圳卫视", number: "207", category: "卫视", icon: "fa-building", url: "http://www.sztv.com.cn/" },
+            { name: "山东卫视", number: "208", category: "卫视", icon: "fa-mountain", url: "http://www.sd.tv/" },
+            
+            { name: "北京新闻", number: "301", category: "本地", icon: "fa-newspaper", url: "https://www.brtn.cn/" },
+            { name: "北京文艺", number: "302", category: "本地", icon: "fa-theater-masks", url: "https://www.brtn.cn/" },
+            { name: "北京科教", number: "303", category: "本地", icon: "fa-book", url: "https://www.brtn.cn/" },
+            { name: "北京影视", number: "304", category: "本地", icon: "fa-video", url: "https://www.brtn.cn/" },
+            { name: "北京财经", number: "305", category: "本地", icon: "fa-yen-sign", url: "https://www.brtn.cn/" },
+            { name: "北京生活", number: "306", category: "本地", icon: "fa-heart", url: "https://www.brtn.cn/" },
+            
+            { name: "腾讯视频", number: "401", category: "流媒体", icon: "fab fa-tencent-weibo", url: "https://v.qq.com/" },
+            { name: "爱奇艺", number: "402", category: "流媒体", icon: "fab fa-qq", url: "https://www.iqiyi.com/" },
+            { name: "优酷", number: "403", category: "流媒体", icon: "fab fa-youtube", url: "https://www.youku.com/" },
+            { name: "芒果TV", number: "404", category: "流媒体", icon: "fa-tv", url: "https://www.mgtv.com/" },
+            { name: "哔哩哔哩", number: "405", category: "流媒体", icon: "fab fa-bilibili", url: "https://www.bilibili.com/" },
+        ];
+
+        // DOM元素
+        const channelsGrid = document.getElementById('channelsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
         const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        const body = document.body;
-        
-        // 检查本地存储的主题设置
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme)) {
-            body.classList.add('dark-mode');
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
+
+        // 生成频道卡片
+        function generateChannelCards(channelList) {
+            channelsGrid.innerHTML = '';
+            
+            if (channelList.length === 0) {
+                channelsGrid.innerHTML = '<div class="no-results">没有找到匹配的频道</div>';
+                return;
+            }
+            
+            channelList.forEach(channel => {
+                const card = document.createElement('a');
+                card.className = 'channel-card';
+                card.href = channel.url;
+                card.target = '_blank';
+                card.innerHTML = `
+                    <div class="channel-logo">
+                        <i class="fas ${channel.icon}"></i>
+                    </div>
+                    <div class="channel-info">
+                        <div class="channel-name">${channel.name}</div>
+                        <div class="channel-number">频道号: ${channel.number}</div>
+                    </div>
+                `;
+                channelsGrid.appendChild(card);
+            });
         }
-        
-        // 切换主题
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
+
+        // 过滤频道
+        function filterChannels(category, searchTerm) {
+            searchTerm = searchTerm.toLowerCase();
             
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+            return channels.filter(channel => {
+                const matchesCategory = category === 'all' || channel.category === category;
+                const matchesSearch = !searchTerm || 
+                                    channel.name.toLowerCase().includes(searchTerm) || 
+                                    channel.number.includes(searchTerm);
+                
+                return matchesCategory && matchesSearch;
+            });
+        }
+
+        // 初始化页面
+        function initializePage() {
+            generateChannelCards(channels);
+            
+            // 搜索功能
+            searchInput.addEventListener('input', () => {
+                const currentCategory = document.querySelector('.filter-btn.active').dataset.filter;
+                const filteredChannels = filterChannels(currentCategory, searchInput.value);
+                generateChannelCards(filteredChannels);
+            });
+            
+            // 分类筛选
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const category = button.dataset.filter;
+                    const filteredChannels = filterChannels(category, searchInput.value);
+                });
+            });
+            
+            // 深色模式切换
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i> 切换亮色模式';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i> 切换暗色模式';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // 检查保存的主题
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> 切换亮色模式';
             }
-        });
-        
-        // 导航栏滚动隐藏功能
-        const header = document.getElementById('mainHeader');
-        let lastScrollTop = 0;
-        
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // 向下滚动
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                // 向上滚动
-                header.style.transform = 'translateY(0)';
-            }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>
+
