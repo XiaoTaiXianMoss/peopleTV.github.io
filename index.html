@@ -52,7 +52,7 @@
             background-color: #444;
         }
         
-        body.dark极.subtitle {
+        body.dark-mode .subtitle {
             color: #aaa;
         }
         
@@ -287,7 +287,7 @@
         }
         
         .channel-box:hover::after {
-            opacity: 极;
+            opacity: 1;
         }
         
         .channel-box:focus {
@@ -600,7 +600,7 @@
                     <div class="channel-number">9</div>
                     <span class="channel-name">CCTV9 纪录</span>
                 </a>
-                <a href="https://tv.c极tv.com/cctvchild/" class="channel-box cctv-box" data-number="14">
+                <a href="https://tv.cctv.com/cctvchild/" class="channel-box cctv-box" data-number="14">
                     <div class="channel-number">14</div>
                     <span class="channel-name">CCTV14 少儿</span>
                 </a>
@@ -716,12 +716,9 @@
         </div>
     </div>
 
-    <!-- 底部页脚 - 关于我们放在这里 -->
+    <!-- 底部页脚 -->
     <footer class="site-footer">
         <p>© 2025 电视频道导航系统 | 开源至Github</p>
-        <div class="footer-links">
-            <a href="about.html" class="footer-link">关于我们</a>
-        </div>
     </footer>
     
     <!-- 通知消息 -->
@@ -739,6 +736,14 @@
             const themeToggle = document.getElementById('themeToggle');
             const floatingReset = document.getElementById('floatingReset');
             const channelBoxes = document.querySelectorAll('.channel-box');
+            
+            // 辅助函数：给元素添加高亮动画
+            function highlightBoxes(boxes) {
+                boxes.forEach(box => box.classList.add('highlight-animation'));
+                setTimeout(() => {
+                    boxes.forEach(box => box.classList.remove('highlight-animation'));
+                }, 1200);
+            }
             
             // 搜索功能（修正精确匹配问题）
             function searchChannel() {
@@ -762,22 +767,12 @@
                             matchedBoxes[0].scrollIntoView({behavior: 'smooth', block: 'center'});
                             
                             // 添加高亮
-                            matchedBoxes.forEach(box => {
-                                box.classList.add('highlight-animation');
-                            });
-                            
-                            // 设置超时移除高亮
-                            setTimeout(() => {
-                                matchedBoxes.forEach(box => {
-                                    box.classList.remove('highlight-animation');
-                                });
-                            }, 1200);
+                            highlightBoxes(matchedBoxes);
                             
                             showNotification(`已定位到频道编号 ${input}`, true);
                         } else {
                             // 无匹配频道
-                            notification.classList.add('warning');
-                            showNotification(`未找到编号为 ${input} 的频道`, false);
+                            showNotification(`未找到编号为 ${input} 的频道`, false, 'warning');
                         }
                     } else {
                         // 多字符模糊匹配
@@ -793,43 +788,38 @@
                             matchedBoxes[0].scrollIntoView({behavior: 'smooth', block: 'center'});
                             
                             // 添加高亮
-                            matchedBoxes.forEach(box => {
-                                box.classList.add('highlight-animation');
-                            });
-                            
-                            // 设置超时移除高亮
-                            setTimeout(() => {
-                                matchedBoxes.forEach(box => {
-                                    box.classList.remove('highlight-animation');
-                                });
-                            }, 1200);
+                            highlightBoxes(matchedBoxes);
                             
                             showNotification(`已找到${matchedBoxes.length}个包含"${input}"的频道`, true);
                         } else {
                             // 无匹配频道
-                            notification.classList.add('warning');
-                            showNotification(`未找到包含"${input}"的频道`, false);
+                            showNotification(`未找到包含"${input}"的频道`, false, 'warning');
                         }
                     }
                 } else {
-                    showNotification('请输入频道编号', false);
+                    showNotification('请输入频道编号', false, 'warning');
                 }
             }
             
             // 显示通知消息
-            function showNotification(message, isSuccess) {
+            function showNotification(message, isSuccess, type) {
                 notificationText.textContent = message;
                 notification.classList.add('show');
                 if (isSuccess) {
                     notification.classList.add('success');
                     notification.classList.remove('warning');
+                } else if (type === 'warning') {
+                    notification.classList.add('warning');
+                    notification.classList.remove('success');
                 } else {
                     notification.classList.remove('success');
+                    notification.classList.remove('warning');
                 }
                 
                 setTimeout(() => {
                     notification.classList.remove('show');
                     notification.classList.remove('warning');
+                    notification.classList.remove('success');
                 }, 3000);
             }
             
@@ -893,7 +883,6 @@
                     box.classList.remove('highlight-animation');
                 });
                 
-                notification.classList.add('success');
                 showNotification('视图已重置', true);
             }
             
